@@ -6,7 +6,7 @@ const axios =require("axios");
 
 const scope = 'ZohoRECRUIT.modules.all';
 
-const criteria = 'Skills:equals:SA[';
+const criteria = 'Skills:equals:SAP';
 const accessToken = '...xyz'; // Replace with your actual access token
 //hitting this method:
 const getCandidatesZoho = async (urL) => {
