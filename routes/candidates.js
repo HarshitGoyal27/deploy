@@ -1,14 +1,14 @@
 /* eslint-disable no-undef */
 const Router = require('express')
-const {validateAuth} = require('../middlewares/auth/auth.middleware');
+// const{} = require('../middlewares/auth/auth.middleware');
 const  candidateController = require('../controller/candidateController');
 const router = Router();
-
-router.get("/api/id/:id", validateAuth, candidateController.getCandidate);
+router.use(Router.json());
+router.get("/id/:id", candidateController.getCandidate);//done
 // {
 //     "id": "dbId"
 // }
-router.post("/api/filter/candidates", validateAuth, candidateController.getFilteredCandidates);
+router.post("/filter/candidates", candidateController.getFilteredCandidates);//done
 // {
 //     "experience": { "min": 2, "max": 5 },
 //     "location": "desired_location",
@@ -33,17 +33,17 @@ router.post("/api/filter/candidates", validateAuth, candidateController.getFilte
 //     "lastActive": "1 day/8 days/15 days/1 month/6 months"
 // }
   
-router.post("/api/sort/candidates", validateAuth, candidateController.getSortedCandidates);
+router.post("/sort/candidates", candidateController.getSortedCandidates);//done
 // {
 //     "sortBy": "experience/salary/education",
 //     "sortOrder": "asc/desc"
 //   }
-router.post("/api/search/candidates", candidateController.getCandidatesBySearch);
+router.post("/search/candidates", candidateController.getCandidatesBySearch);//zoho api hit for this query
 // {
-//     "skills": ["desired_skill_1"],
-//     "designation": "desired_designation"
+//     "skills": ["SAP"],
+//     "designation": "SAP architect"
 //   }
-router.post("/api/form/candidates", validateAuth, candidateController.getCandidates);
+router.post("/form/candidates", candidateController.getCandidates);//done
 // {
 //     "skills": ["desired_skill_1", "desired_skill_2"],
 //     "designation": "desired_designation",
