@@ -22,9 +22,10 @@ const getCandidatesBySearch = async(req, res) => {
         return errorResponse ({res, error})
     }
 }
-
+//this function
 const getCandidates = async(req, res) => {
     try {
+        console.log('A');
         const candidates = await candidateService.getCandidatesData(req);
         return successResponse ({res, data: { candidates }, message: 'Success'})
     } catch (error) {
@@ -34,7 +35,9 @@ const getCandidates = async(req, res) => {
 
 const getFilteredCandidates = async(req, res) => {
     try {
-        const candidates = await candidateService.getFilteredData(req);
+        console.log('reached here')
+        console.log(req.body);
+        const candidates = await candidateService.getFilteredData(req,res);
         return successResponse ({res, data: { candidates }, message: 'Success'})
     } catch (error) {
         return errorResponse ({res, error})
@@ -59,3 +62,4 @@ module.exports = {
     getFilteredCandidates,
     getSortedCandidates,
 }
+
