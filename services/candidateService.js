@@ -2,15 +2,13 @@ const {
     successResponse,
     errorResponse,
 } = require('../utils/response/response.handler')
-const { getCandidatesZoho,getCandidateZoho,searchCandidateZoho,getFilteredZoho,getSortedCandidateZoho } =require('../zohoDb/zohoCandidateApis');
+const { getCandidatesZoho,getCandidateZoho,searchCandidateZoho,getFilteredZoho,getSortedCandidateZoho}=require('../zohoDb/zohoCandidateApis');
 const { API_URL } =require ('../utils/constants/constants');
 
 const buildSearchCriteria = (query) => { 
     const skillsCriteria = query.skills
-      .map((skill) => `Skills:equals:${skill}`)
+      .map((skill) => `Skill_set:contains:${skill}`)
       .join("and");
-    const designationCriteria = `Designation:equals:${query.designation}`;
-    const allCriteria = [skillsCriteria, designationCriteria].join("and");
     console.log(allCriteria)
     return encodeURIComponent(allCriteria);
 }
@@ -67,11 +65,12 @@ const filterSearchcriteria=(query)=>{
 //this api hit
 const getCandidatesData = async (req) => {
     try {
+        console.log('AB');
         const searchQuery = req.body;
         const criteria = buildSearchCriteria(searchQuery);
         const url = `${API_URL}?criteria=${criteria}`;
         console.log(url);
-        console.log('Reached here!');
+        // console.log('Reached here!');
         const candidates = await getCandidatesZoho(url);//function ending with zoho would make API calls
         return successResponse ({res, data: { candidates }, message: 'Success'})
     } catch (error) {
@@ -82,10 +81,11 @@ const getCandidatesData = async (req) => {
 const getCandidateData = async(req, res) => {
     try {
         let id=req.body.id;
-        const url=`${API_URL}?criteria=id:equals:${id}`;
+        const url=`${API_URL}?criteria=Candidate_ID:contains:${id}`;
         console.log(url);
-        // const candidates = await candidateService.getCandidateZoho(url);
-        // return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
+        url=encodeURIComponent(url);
+        const candidates = await candidateService.getCandidateZoho(url);
+        return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
     } catch (error) {
         return errorResponse ({res, error})
     }
@@ -126,7 +126,6 @@ const getSortedCandidateData = async(req, res) => {
         return errorResponse ({res, error})
     }
 }
-
 module.exports = {
     getCandidateData,
     getCandidatesData,
