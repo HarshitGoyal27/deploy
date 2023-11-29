@@ -61,28 +61,28 @@ const fun=async(criteria,url)=>{
   }
 }
 let PerformOperation=(condition,op,stack2,data1)=>{
-  console.log('**',condition);
-  let val=condition.split(':');
-  let first=val[0].substring(1);
-  let second=val[1];
-  let third=val[2];
-  let data2=stack2.pop();
-  let data3=[];
-  let i=0,j=0;
-  const set=new Set();
-  set.add(data1);
-  set.add(data2);
-  if(op==='or'){
-    data3=[...set];
-    return data3;
-  }else{
-     set.forEach((value)=>{
-        if(value.first===third){
-          data3.push(value);
-        }
-     })
-     return data3;
-  }
+  // console.log('**',condition);
+  // let val=condition.split(':');
+  // let first=val[0].substring(1);
+  // let second=val[1];
+  // let third=val[2];
+  // let data2=stack2.pop();
+  // let data3=[];
+  // let i=0,j=0;
+  // const set=new Set();
+  // set.add(data1);
+  // set.add(data2);
+  // if(op==='or'){
+  //   data3=[...set];
+  //   return data3;
+  // }else{
+  //    set.forEach((value)=>{
+  //       if(value.first===third){
+  //         data3.push(value);
+  //       }
+  //    })
+  //    return data3;
+  // }
   
 }
 
