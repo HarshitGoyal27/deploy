@@ -1,10 +1,11 @@
 const axios=require('axios');
 const express=require('express');
 const fs=require('fs');
-let clientId='1000.ZHP5FPHGX4D7I139DFPS8HF8TWWJ1A';
-let clientSecret='7a0cd27669ac157c97d5decfac010b94df84c882bf';
-let codes='1000.b9ba7af722d3049db30145df82cbf657.7cf66c4040615ef05dbb7318280a3163';
+let clientId='1000.DNYK7GIFFIWJKM992S9NR2X3B497FZ';
+let clientSecret='b3175156f597aa63d1901fe2e200ddba151a40a3ec';
+let codes='1000.fd01c8db6d6dd229a899933a7f9feb36.6ee4dd840fa1a709b65748af39255b13';
 let redirectUri='https://skillscapital.io/';
+let refreshtoken='1000.0b7ddec1149a0fd76dda4677a6c5031a.9487a874e5ca3b95e6714b487a8e8161'
 const requestData={
     grant_type: 'authorization_code',
     client_id: clientId,
@@ -20,7 +21,7 @@ const requestData2={
 
 console.log('A');
 // one time use
-// let getAuthToken=async()=>{
+// let getAuthToken=(async()=>{
 //     try{
 //         let resp=await axios.post('https://accounts.zoho.in/oauth/v2/token',null,{
 //             params:requestData
@@ -29,10 +30,10 @@ console.log('A');
 //     }catch(err){
 //         console.log('Errrooorrrr',err);
 //     }
-// }
+// })();
 let getAuthTokenusingReferesh=(async()=>{
     try{
-        let resp=await axios.post(`https://accounts.zoho.in/oauth/v2/token?refresh_token=1000.a55efb2fae1c73c500e6a2dff37d627c.5ebc601a57e194109cad546334724043&client_id=1000.ZHP5FPHGX4D7I139DFPS8HF8TWWJ1A&client_secret=7a0cd27669ac157c97d5decfac010b94df84c882bf&grant_type=refresh_token`);
+        let resp=await axios.post(`https://accounts.zoho.in/oauth/v2/token?refresh_token=${refreshtoken}&client_id=${clientId}&client_secret=${clientSecret}&grant_type=refresh_token`);
         console.log(resp);
     }catch(err){
         console.log('errrorr',err);
