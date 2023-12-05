@@ -2,9 +2,12 @@ const {
     successResponse,
     errorResponse,
 } = require('../utils/response/response.handler')
-const { getCandidatesZoho,getCandidateZoho,searchCandidateZoho,getFilteredZoho,getSortedCandidateZoho}=require('../zohoDb/zohoCandidateApis');
-const { API_URL } =require ('../utils/constants/constants');
-
+const { getCandidatesZoho,getCandidateZoho,searchCandidateZoho,getFilteredZoho,getSortedCandidateZoho,getCandidatesSearchBarZoho,getLocationSearchBarZoho,deletedCandidatesZoho}
+=require('../zohoDb/zohoCandidateApis');
+const { API_URL , API_DELETED_COUNT} =require ('../utils/constants/constants');
+const axios=require('axios');
+const { updateCandidates, deletedCandidates } = require('../controller/candidateController');
+//we have to send search criteria from this file
 const buildSearchCriteria = (query) => { 
     const skillsCriteria = query.skills
       .map((skill) => `Skill_set:contains:${skill}`)
@@ -63,16 +66,30 @@ const filterSearchcriteria=(query)=>{
 }
 
 //this api hit
-const getCandidatesData = async (req) => {
+const getCandidatesData = async (req,res) => {
     try {
-        console.log('AB');
-        const searchQuery = req.body;
-        const criteria = buildSearchCriteria(searchQuery);
-        const url = `${API_URL}?criteria=${criteria}`;
-        console.log(url);
+        // console.log('AB');
+        // const searchQuery = req.body;
+        // const criteria = buildSearchCriteria(searchQuery);
+        // const url = `${API_URL}?criteria=${criteria}`;//we have to make url
+        // console.log(url);
+        // const criteria = 'Skill_set:contains:blockchain';
+        // const accessToken = '1000.efcad6eeab0b575a5f8246800c05fadb.a3b5c5d1e798f746738ddd2934d748eb';
         // console.log('Reached here!');
-        const candidates = await getCandidatesZoho(url);//function ending with zoho would make API calls
-        return successResponse ({res, data: { candidates }, message: 'Success'})
+        console.log('B');
+        let query=req.body.profiles;//we have to make query here and process it in zohoCandidateAPI
+        let str='';//{[...]}
+        for(let key in query){
+            if(query[key]!=''){
+                str+=`(${key.trim()}:contains:${query[key].trim()})and`
+                //console.log(str);
+            }
+        }
+        query=str;
+        console.log(query);
+        let url=`${API_URL}?criteria=${encodeURIComponent(query)}`;
+        const successResponse = await getCandidatesZoho(res,url);//function ending with zoho would make API calls
+        return successResponse;
     } catch (error) {
         return errorResponse ({res, error})
     }
@@ -126,10 +143,57 @@ const getSortedCandidateData = async(req, res) => {
         return errorResponse ({res, error})
     }
 }
+
+const getcandidateSearchBarData= async(req,res)=>{
+    try{
+        let data=req.body;
+        console.log(data,'B');
+        //let search=`(Current_Role:starts_with:${data.search})or(Skill_Set:starts_with:${data.search})`;
+        let successResponse=await getCandidatesSearchBarZoho(res,data.search);
+        return successResponse;
+    }
+    catch(error){
+        return errorResponse ({res, error})
+    }
+}
+
+const getLocationSearchBarData= async(req,res)=>{
+    try{
+        let data=req.body;
+        console.log(data,'B','Reached');
+        //let search=`(Current_Role:starts_with:${data.search})or(Skill_Set:starts_with:${data.search})`
+        let successResponse=await getLocationSearchBarZoho(res,data.searchLocation);
+        return successResponse;
+    }
+    catch(error){
+        console.log('abcdefg',error)
+        return errorResponse ({res, error})
+    }
+}
+
+const updateCandidatesData=async(req,res)=>{
+    try{
+        const successResponse = await updateCandidatesZoho(res);//function ending with zoho would make API calls
+        return successResponse;
+    }catch(error){
+        return errorResponse ({res, error})
+    }
+}
+
+const deletedCandidatesData=async(req,res)=>{
+    try{
+        const successResponse = await deletedCandidatesZoho(res,API_DELETED_COUNT);//function ending with zoho would make API calls
+        return successResponse;
+    }catch(error){
+        return errorResponse ({res, error})
+    }
+}
 module.exports = {
     getCandidateData,
     getCandidatesData,
     searchCandidateData,
     getFilteredData,
     getSortedCandidateData,
+    getcandidateSearchBarData,
+    getLocationSearchBarData,updateCandidatesData,deletedCandidatesData
 }
