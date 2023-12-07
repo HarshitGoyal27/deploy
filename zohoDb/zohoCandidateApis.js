@@ -3,7 +3,7 @@ const {
   errorResponse,
 } = require("../utils/response/response.handler");
 const axios =require("axios");
-const accessToken = '1000.6dcd4e214b276e9b314f4b354a1eae81.093b90c7ea265fa14ebc20e5b435c949'; // Replace with your actual access token
+const accessToken = '1000.3329d6b53268a5ffd0671eeffb7a1ab5.2c61b0aab130e30b97126519b6b7469a'; // Replace with your actual access token
 const fs=require('fs');
 const criteria='(Current_Location:contains:noida)and(Salary:contains:37)and(Last_Name:contains:PANDEY)';//296 info:{per_page:200,page:1,more_records:true}
 //hitting this method:
@@ -67,7 +67,7 @@ let getRequiredFields=(C_data)=>{
       obj.Email=ele.Email;
       obj.Skills=ele.Skill_Set;
       obj.id=ele.id;
-      obj.Experience=ele.Total_Experience;
+      obj.Experience=ele.Experience_in_Years;
       obj.PreviousRole=ele.Previous_Role;
       obj.CurrentRole=ele.Current_Role;
       obj.CandidateProfile=ele.Candidate_Profile;
@@ -102,10 +102,10 @@ const getCandidatesZoho = async (res,url) => {//completed//FORM
       console.log(candidatesData);
       return successResponse({ res, data: { candidatesData }, message: "Success" });
     }else{
-      throw new Error('Data not present');
+      return successResponse({res,data:{candidatesData:'Data not present'},message:"Success"});
     }
   } catch (error) {
-    console.log(error);
+    console.log('HELL00');
     return errorResponse({ res, error });
   }
 };
