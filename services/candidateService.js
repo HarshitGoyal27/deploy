@@ -78,19 +78,26 @@ const getCandidatesData = async (req,res) => {
         // console.log('Reached here!');
         console.log('B');
         let query=req.body.profiles;//we have to make query here and process it in zohoCandidateAPI
+        //let query=req.body.data;
         let str='';//{[...]}
         for(let key in query){
-            if(query[key]!=''){
+            console.log(key);
+            if(query[key]!='' && key.charAt(0)!='E'){
                 str+=`(${key.trim()}:contains:${query[key].trim()})and`
                 //console.log(str);
+            }else if(key.charAt(0)==='E' && query[key]!=''){
+                str+=`(${key.trim()}:equals:${query[key].trim()})`
             }
         }
         query=str;
+        //query+=`(Experience_in_Years:equals:${query.Experience})`;
+        //query='(Skill_Set:contains:SAP BI)and(Salary:contains:30 Lacs';
         console.log(query);
         let url=`${API_URL}?criteria=${encodeURIComponent(query)}`;
         const successResponse = await getCandidatesZoho(res,url);//function ending with zoho would make API calls
         return successResponse;
     } catch (error) {
+        console.log('xyzabc');
         return errorResponse ({res, error})
     }
 }
@@ -195,5 +202,7 @@ module.exports = {
     getFilteredData,
     getSortedCandidateData,
     getcandidateSearchBarData,
-    getLocationSearchBarData,updateCandidatesData,deletedCandidatesData
+    getLocationSearchBarData,
+    updateCandidatesData,
+    deletedCandidatesData
 }
