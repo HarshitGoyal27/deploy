@@ -3,7 +3,7 @@ const {
   errorResponse,
 } = require("../utils/response/response.handler");
 const axios =require("axios");
-const accessToken = '1000.3329d6b53268a5ffd0671eeffb7a1ab5.2c61b0aab130e30b97126519b6b7469a'; // Replace with your actual access token
+const accessToken = '1000.eb1b24e0636216cb58211ebcccc8eb09.2c98af739514ff5ac2b6bfcbf9a02f0c'; // Replace with your actual access token
 const fs=require('fs');
 const criteria='(Current_Location:contains:noida)and(Salary:contains:37)and(Last_Name:contains:PANDEY)';//296 info:{per_page:200,page:1,more_records:true}
 //hitting this method:
@@ -110,15 +110,24 @@ const getCandidatesZoho = async (res,url) => {//completed//FORM
   }
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const getCandidateZoho = async (url) => {
+const getCandidateZoho = async (res,url) => {
   try {
-    const candidates = await axios(url, {
+    console.log('A',url);
+    const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`, 
       },
     });
-    return successResponse({ res, data: { candidates }, message: "Success" });
+    console.log('ID',candidates.data);
+    if(candidates.data!=''){
+      let candidatesData=getRequiredFields(candidates.data);
+      console.log(candidatesData);
+      return successResponse({ res, data: { candidatesData }, message: "Success" });
+    }else{
+      return successResponse({res,data:{candidatesData:'Data not present'},message:"Success"});
+    }
   } catch (error) {
+    console.log('HELLOOOOOO',error);
     return errorResponse({ res, error });
   }
 };
