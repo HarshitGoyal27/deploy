@@ -104,13 +104,14 @@ const getCandidatesData = async (req,res) => {
 
 const getCandidateData = async(req, res) => {
     try {
-        let id=req.body.id;
-        const url=`${API_URL}?criteria=Candidate_ID:contains:${id}`;
+        let id=req.params.id;
+        console.log(id);
+        const url=`https://recruit.zoho.in/recruit/v2/Candidates/${id}`;
         console.log(url);
-        url=encodeURIComponent(url);
-        const candidates = await candidateService.getCandidateZoho(url);
-        return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
+        const successResponse = await getCandidateZoho(res,url);
+        return successResponse;//function ending with zoho would make API calls
     } catch (error) {
+        console.log(error);
         return errorResponse ({res, error})
     }
 }
@@ -130,7 +131,7 @@ const getFilteredData = async(req, res) => {
         const searchQuery=req.body;
         console.log(searchQuery);
         const criteria=filterSearchcriteria(searchQuery);
-        const url = `${API_URL}?criteria=${criteria}`;
+        const url = `${API_URL}?criteria=(${criteria})`;
         console.log(url);
         const candidates = await candidateService.getFilteredZoho(url);
         return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
