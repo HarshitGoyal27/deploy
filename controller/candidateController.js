@@ -7,8 +7,8 @@ const candidateService = require('../services/candidateService');
 const axios=require('axios');
 const getCandidate = async(req, res) => {
     try {
-        const candidates = await candidateService.getCandidateData(req);
-        return successResponse ({res, data: { candidates }, message: 'Success'})
+        const successResponse = await candidateService.getCandidateData(req,res);
+        return successResponse;
     } catch (error) {
         return errorResponse ({res, error})
     }
