@@ -9,6 +9,11 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <style>
+        .cls{
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div id="second"></div>
@@ -18,12 +23,13 @@
             let [arr,setArr]=React.useState([])
             let [searchLocation,setSearchLocation]=React.useState('');
             let [arrLocation,setArrLocation]=React.useState([])
-            let [profiles,setProfile]=React.useState({});//object
-            let [skills,setSkills]=React.useState('');//object
-            let [location,setLocation]=React.useState('');//object
-            let [experience,setEcperience]=React.useState('');//object
-            let [Salary,setSalary]=React.useState('');//object
-            let [profileArr,setProfileArr]=React.useState([]);
+            let [profiles,setProfile]=React.useState({});//API request
+            let [skills,setSkills]=React.useState('');
+            let [location,setLocation]=React.useState('');
+            let [experience,setEcperience]=React.useState('');
+            let [Salary,setSalary]=React.useState('');
+            let [profileArr,setProfileArr]=React.useState([]);//API response
+            let [loading,setLoading]=React.useState(true);
             React.useEffect(()=>{
                 async function fetchData1() {
                     try {
@@ -63,6 +69,7 @@
                   fetchData2();
             },[searchLocation])
             React.useEffect(()=>{
+                console.log('Reached here !!!!!! fetchdata3');
                 async function fetchData3() {
                     try {
                         console.log(profiles);
@@ -71,14 +78,18 @@
                         console.log(resp.data.data);//{[]}
                         let candidates=resp.data.data.candidatesData;
                         console.log(candidates);
-                        setProfileArr([...candidates]);//async
-                        console.log(profileArr);
+                        if(candidates!=='Data not present')
+                            setProfileArr([...candidates]);//async
+                        //console.log(profileArr);
+                        else{
+                            setProfileArr([]);
+                        }
                         
                     } catch (error) {
                         console.error('Error fetching data:', error);
                     }
                   }                    // Object is empty
-                    fetchData3();  
+                    if(loading===false){fetchData3();}  
             },[profiles])
             let handleChange1=(e)=>{
                 setSearch(e.target.value);
@@ -93,22 +104,23 @@
                 obj.Skill_Set=element[0].value;
                 obj.Salary=element[1].value;
                 obj.Current_Location=element[2].value;
-                obj.Experience=element[3].value;
+                obj.Experience_in_Years=element[3].value;//equals
                 console.log(obj);
-                setProfile({...obj})
+                setProfile({...obj});
+                setLoading(false);
             };
             return (
                 <div>
                     <div style={{display:'flex'}}>
                         <div>
-                            <b>SKILLS</b>:&nbsp;<input type="text" id="first" onChange={(e)=>handleChange1(e)}/>
+                            <b class='cls'>SKILLS</b>:&nbsp;<input type="text" id="first" onChange={(e)=>handleChange1(e)}/>
                             {
                                 arr.length===0?<div></div>:
                                 arr.map((ele,idx)=>(
                                     <div key={`abc#${idx}`}>{ele}</div>
                                 ))
                             }
-                            <b>LOCATION</b>:&nbsp;<input type='text' id='second' onChange={(e)=>handleChange2(e)}/>
+                            <b class='cls'>LOCATION</b>:&nbsp;<input type='text' id='second' onChange={(e)=>handleChange2(e)}/>
                             {
                                 arrLocation.length===0?<div></div>:
                                 arrLocation.map((ele,idx)=>(
@@ -139,18 +151,19 @@
                             </tbody>                                     
                         </table>
                         <button onClick={handleSubmit}>Submit</button>
-                    </div>
+                    </div> 
                     {
                         profileArr.length===0?<div></div>:
                         profileArr.map((ele,idx)=>(
-                            <div key={idx} style={{height:'20vw',width:'50vw',marginTop:'50px',border:'2px solid black'}}>
-                                <div>Name:{ele.Name}</div>
-                                <div>Current Role:{ele.CurrentRole}</div>
-                                <div>Previous Role:{ele.PreviousRole}</div>
-                                <div>Current Location:{ele.CurrentLocation}</div>
-                                <div>Preferred Location:{ele.PrefferedLocation}</div>
-                                <div>Skills:{ele.Skills}</div>
-                                <div>Salary:{ele.Salary}</div>
+                            <div key={idx} style={{width:'50vw',marginTop:'50px',border:'2px solid black'}}>
+                                <b class='cls'>Name:{ele.Name}</b>
+                                <b class='cls'>Current Role:{ele.CurrentRole}</b>
+                                <b class='cls'>Previous Role:{ele.PreviousRole}</b>
+                                <b class='cls'>Current Location:{ele.CurrentLocation}</b>
+                                <b class='cls'>Preferred Location:{ele.PrefferedLocation}</b>
+                                <b class='cls'>Skills:{ele.Skills}</b>
+                                <b class='cls'>Salary:{ele.Salary}</b>
+                                <b class='cls'>Experiencee:{ele.Experience}</b>
                             </div>
                         ))
                     }
