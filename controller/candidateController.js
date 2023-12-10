@@ -25,7 +25,6 @@ const getCandidatesBySearch = async(req, res) => {
 //this function
 const getCandidates = async(req, res) => {
     try {
-        console.log('A');
         const successResponse = await candidateService.getCandidatesData(req,res);
         return successResponse;
     } catch (error) {
