@@ -4,18 +4,9 @@ const {
 } = require('../utils/response/response.handler')
 const { getCandidatesZoho,getCandidateZoho,searchCandidateZoho,getFilteredZoho,getSortedCandidateZoho,getCandidatesSearchBarZoho,getLocationSearchBarZoho,deletedCandidatesZoho}
 =require('../zohoDb/zohoCandidateApis');
-const { API_URL , API_DELETED_COUNT} =require ('../utils/constants/constants');
+const { API_URL_SEARCH , API_DELETED_COUNT , API_URL_GET} =require ('../utils/constants/constants');
 const axios=require('axios');
-const { updateCandidates, deletedCandidates } = require('../controller/candidateController');
 //we have to send search criteria from this file
-const buildSearchCriteria = (query) => { 
-    const skillsCriteria = query.skills
-      .map((skill) => `Skill_set:contains:${skill}`)
-      .join("and");
-    console.log(allCriteria)
-    return encodeURIComponent(allCriteria);
-}
-
 const filterSearchcriteria=(query)=>{
     const criteria = [];
     if (query.experience){
@@ -66,16 +57,8 @@ const filterSearchcriteria=(query)=>{
 }
 
 //this api hit
-const getCandidatesData = async (req,res) => {
+const getCandidatesData = async (req,res) => {//DONE
     try {
-        // console.log('AB');
-        // const searchQuery = req.body;
-        // const criteria = buildSearchCriteria(searchQuery);
-        // const url = `${API_URL}?criteria=${criteria}`;//we have to make url
-        // console.log(url);
-        // const criteria = 'Skill_set:contains:blockchain';
-        // const accessToken = '1000.efcad6eeab0b575a5f8246800c05fadb.a3b5c5d1e798f746738ddd2934d748eb';
-        // console.log('Reached here!');
         console.log('B');
         let query=req.body.profiles;//we have to make query here and process it in zohoCandidateAPI
         //let query=req.body.data;
@@ -90,25 +73,24 @@ const getCandidatesData = async (req,res) => {
             }
         }
         query=str;
-        //query+=`(Experience_in_Years:equals:${query.Experience})`;
-        //query='(Skill_Set:contains:SAP BI)and(Salary:contains:30 Lacs';
-        console.log(query);
-        let url=`${API_URL}?criteria=${encodeURIComponent(query)}`;
+        //console.log(query);
+        let url=`${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
         const successResponse = await getCandidatesZoho(res,url);//function ending with zoho would make API calls
         return successResponse;
     } catch (error) {
-        console.log('xyzabc');
+        //console.log('xyzabc');
         return errorResponse ({res, error})
     }
 }
 
-const getCandidateData = async(req, res) => {
+const getCandidateData = async(req, res) => {//DONE
     try {
         let id=req.params.id;
         console.log(id);
-        const url=`https://recruit.zoho.in/recruit/v2/Candidates/${id}`;
-        console.log(url);
-        const successResponse = await getCandidateZoho(res,url);
+        const url1=`${API_URL_GET}/${id}`;
+        const url2=`${API_URL_GET}/${id}?fields=Educational_Details,Experience_Details_1,Experience_Details_2,Skills_Certification,Skills,Project_Details_1,Project_Details_2`;
+        //console.log(url1,url2);
+        const successResponse = await getCandidateZoho(res,url1,url2);
         return successResponse;//function ending with zoho would make API calls
     } catch (error) {
         console.log(error);
@@ -131,7 +113,7 @@ const getFilteredData = async(req, res) => {
         const searchQuery=req.body;
         console.log(searchQuery);
         const criteria=filterSearchcriteria(searchQuery);
-        const url = `${API_URL}?criteria=(${criteria})`;
+        const url = `${API_URL_SEARCH}?criteria=(${criteria})`;
         console.log(url);
         const candidates = await candidateService.getFilteredZoho(url);
         return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
@@ -143,7 +125,7 @@ const getFilteredData = async(req, res) => {
 const getSortedCandidateData = async(req, res) => {
     try {
         let data=req.body;
-        const url=`${API_URL}?sort_order_by=${data.sortOrder}&sortBy=${data.sortBy}`;
+        const url=`${API_URL_SEARCH}?sort_order_by=${data.sortOrder}&sortBy=${data.sortBy}`;
         console.log(url);
         // const candidates = await candidateService.getSortedCandidateZoho(req);
         // return successResponse ({res, data: { candidates }, message: 'Success'})//function ending with zoho would make API calls
@@ -152,25 +134,26 @@ const getSortedCandidateData = async(req, res) => {
     }
 }
 
-const getcandidateSearchBarData= async(req,res)=>{
+const getcandidateSearchBarData= async(req,res)=>{//DONE
     try{
         let data=req.body;
         console.log(data,'B');
-        //let search=`(Current_Role:starts_with:${data.search})or(Skill_Set:starts_with:${data.search})`;
-        let successResponse=await getCandidatesSearchBarZoho(res,data.search);
+        let searcH1=`(Skill_Set:starts_with:${data.search})`;
+        let url=`${API_URL_SEARCH}?criteria=${encodeURIComponent(searcH1)}`;
+        let successResponse=await getCandidatesSearchBarZoho(res,url);
         return successResponse;
     }
     catch(error){
         return errorResponse ({res, error})
     }
 }
-
-const getLocationSearchBarData= async(req,res)=>{
+const getLocationSearchBarData= async(req,res)=>{//DONE
     try{
         let data=req.body;
         console.log(data,'B','Reached');
-        //let search=`(Current_Role:starts_with:${data.search})or(Skill_Set:starts_with:${data.search})`
-        let successResponse=await getLocationSearchBarZoho(res,data.searchLocation);
+        let searcH1=`(Current_Location:starts_with:${data.searchLocation})`;
+        let url=`${API_URL_SEARCH}?criteria=${encodeURIComponent(searcH1)}`;
+        let successResponse=await getLocationSearchBarZoho(res,url);
         return successResponse;
     }
     catch(error){
@@ -190,7 +173,7 @@ const updateCandidatesData=async(req,res)=>{
 
 const deletedCandidatesData=async(req,res)=>{
     try{
-        const successResponse = await deletedCandidatesZoho(res,API_DELETED_COUNT);//function ending with zoho would make API calls
+        const successResponse = await deletedCandidatesZoho(res,`${API_DELETED_COUNT}`);//function ending with zoho would make API calls
         return successResponse;
     }catch(error){
         return errorResponse ({res, error})
