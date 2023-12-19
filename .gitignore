@@ -1,5 +1,15 @@
 # Dependency directories
 node_modules/
+chngeformat.js
+excel.js
+index.html
+u.json
+uu.json
+xlformat.json
+xyz.json
+zoho.js
+addDatatoZoho.js
+extractedData/ 
 
 # Logs
 logs
