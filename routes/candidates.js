@@ -12,6 +12,6 @@ router.post("/form/candidates", candidateController.getCandidates);
 router.post('/add/candidates',candidateController.addCandidates);
 router.post('/searchbar/candidates',candidateController.getcandidateSearchBar);
 router.post('/location/candidates',candidateController.getLocationSearchBar);
-router.put('/update/candidates',candidateController.updateCandidates);
+router.put('/update/candidates/:id',candidateController.updateCandidates);
 router.get('/deletedrecords/candidates',candidateController.deletedCandidates)
 module.exports = router;

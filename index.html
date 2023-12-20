@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -75,7 +75,7 @@
                         console.log(profiles);
                         let resp = await axios.post('http://localhost:3000/api/form/candidates', { profiles });
                         // Update the state using setArr
-                        console.log(resp.data.data);//{[]}
+                        console.log('HELLO',resp.data.data);//{[]}
                         let candidates=resp.data.data.candidatesData;
                         console.log(candidates);
                         if(candidates!=='Data not present')
@@ -104,7 +104,8 @@
                 obj.Skill_Set=element[0].value;
                 obj.Salary=element[1].value;
                 obj.Current_Location=element[2].value;
-                obj.Experience_in_Years=element[3].value;//equals
+                obj.Experience_in_Years=element[3].value;//
+                obj.Current_Timezone=element[4].value;
                 console.log(obj);
                 setProfile({...obj});
                 setLoading(false);
@@ -113,14 +114,14 @@
                 <div>
                     <div style={{display:'flex'}}>
                         <div>
-                            <b class='cls'>SKILLS</b>:&nbsp;<input type="text" id="first" onChange={(e)=>handleChange1(e)}/>
+                            <b className='cls'>SKILLS</b>:&nbsp;<input type="text" id="first" onChange={(e)=>handleChange1(e)}/>
                             {
                                 arr.length===0?<div></div>:
                                 arr.map((ele,idx)=>(
                                     <div key={`abc#${idx}`}>{ele}</div>
                                 ))
                             }
-                            <b class='cls'>LOCATION</b>:&nbsp;<input type='text' id='second' onChange={(e)=>handleChange2(e)}/>
+                            <b className='cls'>LOCATION</b>:&nbsp;<input type='text' id='second' onChange={(e)=>handleChange2(e)}/>
                             {
                                 arrLocation.length===0?<div></div>:
                                 arrLocation.map((ele,idx)=>(
@@ -148,6 +149,16 @@
                                     <th>Years of Experience</th>
                                     <th><input type='text' className='one'/></th>
                                 </tr>
+                                <tr>
+                                    <th>Current Timezone</th>
+                                    <th>
+                                        <select className='one'>
+                                            <option>IST</option>
+                                            <option>ET</option>
+                                            <option>CET</option>
+                                        </select>
+                                    </th>
+                                </tr>
                             </tbody>                                     
                         </table>
                         <button onClick={handleSubmit}>Submit</button>
@@ -156,14 +167,14 @@
                         profileArr.length===0?<div></div>:
                         profileArr.map((ele,idx)=>(
                             <div key={idx} style={{width:'50vw',marginTop:'50px',border:'2px solid black'}}>
-                                <b class='cls'>Name:{ele.Name}</b>
-                                <b class='cls'>Current Role:{ele.CurrentRole}</b>
-                                <b class='cls'>Previous Role:{ele.PreviousRole}</b>
-                                <b class='cls'>Current Location:{ele.CurrentLocation}</b>
-                                <b class='cls'>Preferred Location:{ele.PrefferedLocation}</b>
-                                <b class='cls'>Skills:{ele.Skills}</b>
-                                <b class='cls'>Salary:{ele.Salary}</b>
-                                <b class='cls'>Experiencee:{ele.Experience}</b>
+                                <b className='cls'>Name:{ele.Name}</b>
+                                <b className='cls'>Current Role:{ele.CurrentRole}</b>
+                                <b className='cls'>Previous Role:{ele.PreviousRole}</b>
+                                <b className='cls'>Current Location:{ele.CurrentLocation}</b>
+                                <b className='cls'>Preferred Location:{ele.PrefferedLocation}</b>
+                                <b className='cls'>Skills:{ele.Skills}</b>
+                                <b className='cls'>Salary:$ {ele.Salary}</b>
+                                <b className='cls'>Experiencee:{ele.Experience}</b>
                             </div>
                         ))
                     }

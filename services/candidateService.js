@@ -9,11 +9,13 @@ const {
   getCandidatesSearchBarZoho,
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
+  updateCandidatesZoho
 } = require("../zohoDb/zohoCandidateApis");
 const {
   API_URL_SEARCH,
   API_DELETED_COUNT,
   API_URL_GET,
+  API_URL_GET_TABULAR_OLD
 } = require("../utils/constants/constants");
 
 const filterSearchcriteria = (query) => {
@@ -85,13 +87,14 @@ const getCandidatesData = async (req, res) => {
     let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
     let str = ""; //{[...]}
     for (let key in query) {
-      if (query[key] != "" && key.charAt(0) != "E") {
+      if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
         str += `(${key.trim()}:contains:${query[key].trim()})and`;
-      } else if (key.charAt(0) === "E" && query[key] != "") {
-        str += `(${key.trim()}:equals:${query[key].trim()})`;
+      } else if ((key === "Experience_in_Years" || key==="Current_Timezone") && query[key] != "") {
+        str += `(${key.trim()}:equals:${query[key].trim()})and`;
       }
     }
-    query = str;
+    query = str.substring(0,str.length-3);
+    console.log(query);
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
     const successResponse = await getCandidatesZoho(res, url); //function ending with zoho would make API calls
     return successResponse;
@@ -104,7 +107,7 @@ const getCandidateData = async (req, res) => {
   try {
     const id = req.params.id;
     const url1 = `${API_URL_GET}/${id}`;
-    const url2 = `${API_URL_GET}/${id}?fields=Educational_Details,Experience_Details_1,Experience_Details_2,Skills_Certification,Skills,Project_Details_1,Project_Details_2`;
+    const url2 = `${API_URL_GET_TABULAR_OLD}?id=${id}`;
     const successResponse = await getCandidateZoho(res, url1, url2);
     return successResponse; //function ending with zoho would make API calls
   } catch (error) {
@@ -167,15 +170,6 @@ const getLocationSearchBarData = async (req, res) => {
   }
 };
 
-const updateCandidatesData = async (req, res) => {
-  try {
-    const successResponse = await updateCandidatesZoho(res); //function ending with zoho would make API calls
-    return successResponse;
-  } catch (error) {
-    return errorResponse({ res, error });
-  }
-};
-
 const deletedCandidatesData = async (req, res) => {
   try {
     const successResponse = await deletedCandidatesZoho(
@@ -188,23 +182,6 @@ const deletedCandidatesData = async (req, res) => {
   }
 };
 
-const addCandidatesData = async (req, res) => {
-  try {
-    const dataFromrequest = req.body; //JSON array[{},{},{},...]
-    const dataTobeAdded = {};
-    //Basic Info
-    dataTobeAdded.First_Name = dataFromrequest.FirstName;
-    if (dataFromrequest.MiddleName) {
-      dataTobeAdded.Middle_Name = dataFromrequest.MiddleName;
-    }
-    dataTobeAdded.Last_Name = dataFromrequest.LastName;
-    dataTobeAdded.Email = dataFromrequest.Email;
-    const successResponse = await addCandidatesZoho(res, dataFromrequest); //function ending with zoho would make API calls
-    return successResponse;
-  } catch (error) {
-    return errorResponse({ res, error });
-  }
-};
 module.exports = {
   getCandidateData,
   getCandidatesData,
@@ -213,7 +190,5 @@ module.exports = {
   getSortedCandidateData,
   getcandidateSearchBarData,
   getLocationSearchBarData,
-  updateCandidatesData,
   deletedCandidatesData,
-  addCandidatesData,
 };

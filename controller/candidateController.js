@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const { errorResponse } = require("../utils/response/response.handler");
 const candidateService = require("../services/candidateService");
-
+const addCandidatesService=require("../services/addCandidatesService");
 const getCandidate = async (req, res) => {
   try {
     const successResponse = await candidateService.getCandidateData(req, res);
@@ -73,7 +73,8 @@ const getLocationSearchBar = async (req, res) => {
 
 const updateCandidates = async (req, res) => {
   try {
-    const successResponse = await candidateService.updateCandidatesData(req, res);
+    console.log('A');
+    const successResponse = await addCandidatesService.updateCandidatesData(req, res);
     return successResponse;
   } catch (error) {
     return errorResponse({ res, error });
@@ -94,7 +95,8 @@ const deletedCandidates = async (req, res) => {
 
 const addCandidates = async (req, res) => {
   try {
-    const successResponse = await candidateService.addCandidatesData(req, res);
+    console.log('reached 1')
+    const successResponse = await addCandidatesService.addCandidatesData(req, res);
     return successResponse;
   } catch (err) {
     return errorResponse({ res, err });
