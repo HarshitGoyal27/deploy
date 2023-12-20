@@ -10,7 +10,6 @@ const port = process.env.PORT || 3000;
 app.use(cors());
 app.use("/api/", router);
 let token='';
-console.log('called the app.js again');
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 
