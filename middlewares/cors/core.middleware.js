@@ -1,8 +1,6 @@
-const { getAllowedOrigins } = require('../../config');
-
 const allowCrossDomain = (req, res, next) => {
   const { origin } = req.headers;
-  const allowedOrigins = getAllowedOrigins();
+  const allowedOrigins = ['*'];
   if (process.env.NODE_ENV !== 'production' && origin && allowedOrigins.indexOf(origin) > -1) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
