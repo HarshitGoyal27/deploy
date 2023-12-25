@@ -4,11 +4,7 @@ const {
   errorResponse,
 } = require("../utils/response/response.handler");
 const axios = require("axios");
-let accessToken=''
-const newAccessToken = () => {
-  accessToken = '1000.0e41b3aea3e9c971ac1f0322e3e4837d.0516eece8757e79e2ff31d85a5cc273a';
-  console.log('loacl host token',accessToken);
-};
+const { getAccessToken } = require("../accessToken");
 
 const getRequiredFields = (C_data) => {
   return C_data.data.map((ele) => ({
@@ -26,36 +22,40 @@ const getRequiredFields = (C_data) => {
   }));
 };
 
-const getTabularFields = ({FL})=>{
-  let obj={};
-  for(let i in FL){
-    let key=FL[i].val;
-    key=(!/\s\/\s/.test(key))?key.replace(/\s/,'_'):key.replace(/\s\/\s/,'_').replace(/\s/,'_');
-    let rows={};
-    let arr=[];
-    if(FL[i].TR){
-      arr=[]
-      FL[i].TR.forEach((ele)=>{
-          rows={};
-          ele.TL.forEach((values)=>{
-            if(values.val!=='TABULARROWID'){
-              let val=(!/\s\/\s/.test(values.val))?values.val.replace(/\s/,'_'):values.val.replace(/\s\/\s/,'_');
-              rows[val]=values.content;
-            }
-          })
-          arr.push(rows);
-      })
-      obj[key]=arr;
-    }else{
-      obj[key]='';
+const getTabularFields = ({ FL }) => {
+  let obj = {};
+  for (let i in FL) {
+    let key = FL[i].val;
+    key = !/\s\/\s/.test(key)
+      ? key.replace(/\s/, "_")
+      : key.replace(/\s\/\s/, "_").replace(/\s/, "_");
+    let rows = {};
+    let arr = [];
+    if (FL[i].TR) {
+      arr = [];
+      FL[i].TR.forEach((ele) => {
+        rows = {};
+        ele.TL.forEach((values) => {
+          if (values.val !== "TABULARROWID") {
+            let val = !/\s\/\s/.test(values.val)
+              ? values.val.replace(/\s/, "_")
+              : values.val.replace(/\s\/\s/, "_");
+            rows[val] = values.content;
+          }
+        });
+        arr.push(rows);
+      });
+      obj[key] = arr;
+    } else {
+      obj[key] = "";
     }
   }
   return obj;
-}
+};
 
 const getCandidatesZoho = async (res, url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -85,8 +85,8 @@ const getCandidatesZoho = async (res, url) => {
 };
 
 const getCandidateZoho = async (res, url1, url2) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const [candidates, tabular] = await Promise.all([
       axios.get(url1, {
         headers: {
@@ -100,8 +100,10 @@ const getCandidateZoho = async (res, url1, url2) => {
       }),
     ]);
     if (candidates.data != "") {
-      const candidatesData = getRequiredFields(candidates.data);//Array of objects
-      const tabularData = getTabularFields(tabular.data.response.result.Candidates);//object
+      const candidatesData = getRequiredFields(candidates.data); //Array of objects
+      const tabularData = getTabularFields(
+        tabular.data.response.result.Candidates
+      ); //object
       candidatesData.push(tabularData);
       return successResponse({
         res,
@@ -122,8 +124,8 @@ const getCandidateZoho = async (res, url1, url2) => {
 };
 
 const searchCandidateZoho = async (url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -136,8 +138,8 @@ const searchCandidateZoho = async (url) => {
 };
 
 const getFilteredZoho = async (url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -150,8 +152,8 @@ const getFilteredZoho = async (url) => {
 };
 
 const getSortedCandidateZoho = async (url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -163,11 +165,10 @@ const getSortedCandidateZoho = async (url) => {
   }
 };
 
-const addCandidatesZoho = async (res, data,url) => {
-  console.log('reached here 3')
-  newAccessToken();
+const addCandidatesZoho = async (res, data, url) => {
   try {
-    let candidatesidresp=await axios.post(url, data, {
+    const accessToken = getAccessToken();
+    let candidatesidresp = await axios.post(url, data, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
       },
@@ -179,14 +180,14 @@ const addCandidatesZoho = async (res, data,url) => {
       message: "Success",
     });
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return errorResponse({ res, err });
   }
 };
 
 const getCandidatesSearchBarZoho = async (res, url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const resp1 = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -212,8 +213,8 @@ const getCandidatesSearchBarZoho = async (res, url) => {
 };
 
 const getLocationSearchBarZoho = async (res, url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const resp = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -240,25 +241,32 @@ const getLocationSearchBarZoho = async (res, url) => {
   }
 };
 
-const updateCandidatesZoho = async (res,data,url) => {
-  newAccessToken();
-  console.log('C',{data},url)
-  try{
-    const resp = await axios.put(url,{data},{
-      headers: {
-        Authorization: `Zoho-oauthtoken ${accessToken}`,
-      },
-    });
+const updateCandidatesZoho = async (res, data, url) => {
+  try {
+    const accessToken = getAccessToken();
+    const resp = await axios.put(
+      url,
+      { data },
+      {
+        headers: {
+          Authorization: `Zoho-oauthtoken ${accessToken}`,
+        },
+      }
+    );
     console.log(resp);
-    return successResponse({ res, data: 'Updated Succesfully', message: "Success" });
-  }catch(err){
+    return successResponse({
+      res,
+      data: "Updated Succesfully",
+      message: "Success",
+    });
+  } catch (err) {
     return errorResponse({ res, err });
   }
 };
 
 const deletedCandidatesZoho = async (res, url) => {
-  newAccessToken();
   try {
+    const accessToken = getAccessToken();
     const resp = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -280,5 +288,5 @@ module.exports = {
   getCandidatesSearchBarZoho,
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
-  updateCandidatesZoho
+  updateCandidatesZoho,
 };

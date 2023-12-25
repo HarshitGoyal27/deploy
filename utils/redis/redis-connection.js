@@ -1,23 +1,77 @@
-/* eslint-disable no-undef */
-/* eslint no-console: ["error", { allow: ["warn", "error", "log"] }] */
 const redis = require('redis');
-const config = require('../../config').getConfig();
+const dotenv = require('dotenv');
+dotenv.config();
 
-const redisClient = redis.createClient(
-  config.redisConnection.port,
-  config.redisConnection.hostname,
-);
+const createRedisClient = () => {
+  return new Promise((resolve, reject) => {
+    const redisClient = redis.createClient({
+      port: process.env.REDIS_PORT,
+      host: process.env.HOSTNAME,
+    });
 
-redisClient.on('connect', () => {
-  module.exports.client = redisClient;
-  console.log(
-    `Connected with redis server: host: ${config.redisConnection.hostname} port: ${config.redisConnection.port}`,
-  );
-});
+    redisClient.on('connect', () => {
+      console.log(
+        `Connected with redis server: host: ${process.env.HOSTNAME} port: ${process.env.REDIS_PORT}`,
+      );
+      resolve(redisClient);
+    });
 
-redisClient.on('error', (err) => {
-  console.log(err);
-  console.log('Error while creating connection');
-});
+    redisClient.on('error', (err) => {
+      console.error('Error while creating connection:', err);
+      reject(err);
+    });
+  });
+};
 
-module.exports = redisClient;
+const setupRedis = async () => {
+  try {
+    const client = await createRedisClient();
+    console.log('Client connected:', client.connected);
+
+    const setKey = (key, value, expiryInSeconds) => {
+      return new Promise((resolve, reject) => {
+        client.set(key, value, 'EX', expiryInSeconds, (err, reply) => {
+          if (err) {
+            console.error('Error setting key:', err);
+            reject(err);
+          } else {
+            resolve(reply);
+          }
+        });
+      });
+    };
+
+    const getKey = (key) => {
+      return new Promise((resolve, reject) => {
+        client.get(key, (err, reply) => {
+          if (err) {
+            console.error('Error getting key:', err);
+            reject(err);
+          } else {
+            resolve(reply);
+          }
+        });
+      });
+    };
+
+    const setExpiry = (key, expiryInSeconds) => {
+      return new Promise((resolve, reject) => {
+        client.expire(key, expiryInSeconds, (err, reply) => {
+          if (err) {
+            console.error('Error setting expiry:', err);
+            reject(err);
+          } else {
+            resolve(reply);
+          }
+        });
+      });
+    };
+
+    return { client, setKey, getKey, setExpiry };
+  } catch (error) {
+    console.error('Error setting up Redis:', error);
+    throw error;
+  }
+};
+
+module.exports = { setupRedis };
