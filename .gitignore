@@ -10,6 +10,9 @@ xyz.json
 zoho.js
 addDatatoZoho.js
 extractedData/ 
+test.csv
+gtp.js
+company.js
 
 # Logs
 logs
@@ -36,3 +39,5 @@ coverage
 # OS generated files
 .DS_Store
 Thumbs.db
+
+

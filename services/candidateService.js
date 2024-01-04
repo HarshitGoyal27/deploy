@@ -96,7 +96,7 @@ const getCandidatesData = async (req, res) => {
     query = str.substring(0,str.length-3);
     console.log(query);
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
-    const successResponse = await getCandidatesZoho(res, url); //function ending with zoho would make API calls
+    const successResponse = await getCandidatesZoho(res, url, pageNumber); //function ending with zoho would make API calls
     return successResponse;
   } catch (error) {
     return errorResponse({ res, error });

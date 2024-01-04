@@ -53,7 +53,7 @@ const getTabularFields = ({ FL }) => {
   return obj;
 };
 
-const getCandidatesZoho = async (res, url) => {
+const getCandidatesZoho = async (res, url, pageNumber) => {
   try {
     const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
@@ -62,7 +62,7 @@ const getCandidatesZoho = async (res, url) => {
       },
       params: {
         per_page: 5,
-        page: 1,
+        page: pageNumber,
       },
     });
     if (candidates.data != "") {
