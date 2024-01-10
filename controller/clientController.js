@@ -15,6 +15,7 @@ const addClient=async(req,res)=>{
 
 const addClientCandidates=async(req,res)=>{
     try{
+        console.log('A');
         const successResponse=await clientService.addClientCandidatesData(req,res);
         return successResponse;
     }
@@ -22,4 +23,4 @@ const addClientCandidates=async(req,res)=>{
         return errorResponse({res,error});
     }
 }
-module.exports={addClient}
+module.exports={addClient,addClientCandidates}

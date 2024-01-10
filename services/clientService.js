@@ -16,9 +16,15 @@ const addClientsData=async(req,res)=>{
 
 const addClientCandidatesData=async(req,res)=>{
     try{
-        const clientId=req.body.clientId
-        const candidateId=req.body.candidateId;
-        const successResponse=await addClientCandidatesZoho(res,clientId,candidateId,url);
+        const obj={};
+        obj.Client_Name=req.body.Name;
+        obj.Email=req.body.Email;
+        obj.Company=req.body.Company;
+        obj.Contact_Number=req.body.Contact
+        obj.Call_Schedule=req.body.CallSchedule;
+        obj.Candidates=req.body.Candidates.join(',');
+        console.log('B Reached',obj,API_CLIENT)
+        const successResponse=await addClientCandidatesZoho(res,[obj],API_CLIENT);
         return successResponse;
     }catch(err){
         return errorResponse({res,err});

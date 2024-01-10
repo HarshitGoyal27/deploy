@@ -4,37 +4,53 @@ const {
   errorResponse,
 } = require("../utils/response/response.handler");
 const axios = require("axios");
-const { getAccessToken } = require("../accessToken");
 
-const addClientsZoho=async(res,data,url)=>{
+
+const getSAPDb=async(res)=>{
     try{
-        const accessToken = getAccessToken();
         const successResponse=await axios.post(url,{data},{
             headers:{
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
             }
         })
+        template();
         return successResponse({ res, data: "Clients added Succesfully", message: "Success" });
     }catch(err){
         return errorResponse({res,err});
     }
 }
 
-const addClientCandidatesZoho=async(res,data,url)=>{//direcxt add client with candidates
+const getCloudDb=async(res)=>{
     try{
-        console.log('c');
-        const accessToken = getAccessToken();
-        const successRes=await axios.post(url,{data},{
+        const successResponse=await axios.put(url,{data},{
             headers:{
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
             }
         })
-        console.log(successRes.data);
+        template();
         return successResponse({ res, data: "Clients Candidates added Succesfully", message: "Success" });
     }catch(err){
-        console.log(err)
         return errorResponse({res,err})
     }
 }
 
-module.exports={addClientsZoho,addClientCandidatesZoho};
+const getLegacyDb=async(res)=>{
+    try{
+        const successResponse=await axios.put(url,{data},{
+            headers:{
+                Authorization: `Zoho-oauthtoken ${accessToken}`,
+            }
+        })
+        template();
+        return successResponse({ res, data: "Clients Candidates added Succesfully", message: "Success" });
+    }catch(err){
+        return errorResponse({res,err})
+    }
+}
+
+let template=()=>{
+
+}
+
+
+module.exports={getSAPDb,getCloudDb,getLegacyDb};
