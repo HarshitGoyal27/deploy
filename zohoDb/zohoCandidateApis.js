@@ -137,15 +137,32 @@ const searchCandidateZoho = async (url) => {
   }
 };
 
-const getFilteredZoho = async (url) => {
+const getFilteredZoho = async (res,url,pageNumber) => {
   try {
     const accessToken = getAccessToken();
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
       },
+      params: {
+        per_page: 5,
+        page: pageNumber,
+      },
     });
-    return successResponse({ res, data: { candidates }, message: "Success" });
+    if (candidates.data != "") {
+      const candidatesData = getRequiredFields(candidates.data);
+      return successResponse({
+        res,
+        data: { candidatesData },
+        message: "Success",
+      });
+    } else {
+      return successResponse({
+        res,
+        data: { candidatesData: "Data not present" },
+        message: "Success",
+      });
+    }
   } catch (error) {
     return errorResponse({ res, error });
   }
@@ -266,6 +283,7 @@ const updateCandidatesZoho = async (res, data, url) => {
 
 const deletedCandidatesZoho = async (res, url) => {
   try {
+    console.log('AAAAA')
     const accessToken = getAccessToken();
     const resp = await axios.get(url, {
       headers: {
@@ -278,6 +296,43 @@ const deletedCandidatesZoho = async (res, url) => {
   }
 };
 
+const getTotalCountZoho=async(res,url)=>{
+  try{
+    const accessToken=getAccessToken();
+    let pageNum=1;
+    const resp=await axios.get(url,{
+      headers:{
+        Authorization:`Zoho-oauthtoken ${accessToken}`,
+      },
+      params:{
+        page:pageNum
+      }
+    });
+    //console.log(resp.data);
+    let more_records=resp.data.info.more_records;
+    let count=resp.data.info.count;
+    while(more_records){
+      pageNum++;
+      console.log('A');
+      const respInLoop=await axios.get(url,{
+        headers:{
+          Authorization:`Zoho-oauthtoken ${accessToken}`,
+        },
+        params:{
+          page:pageNum
+        }
+      });
+      more_records=respInLoop.data.info.more_records;
+      count+=respInLoop.data.info.count;
+    }
+    return successResponse({res,data:count,message:"Success"});
+  }catch(error){
+    console.log('errorr in fetching too many records');
+    return errorResponse({ res, error });
+  }
+  console.log('reacheddddd')
+}
+
 module.exports = {
   getCandidatesZoho,
   getCandidateZoho,
@@ -289,4 +344,5 @@ module.exports = {
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
   updateCandidatesZoho,
+  getTotalCountZoho
 };

@@ -9,7 +9,8 @@ const {
   getCandidatesSearchBarZoho,
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
-  updateCandidatesZoho
+  updateCandidatesZoho,
+  getTotalCountZoho
 } = require("../zohoDb/zohoCandidateApis");
 const {
   API_URL_SEARCH,
@@ -18,73 +19,11 @@ const {
   API_URL_GET_TABULAR_OLD
 } = require("../utils/constants/constants");
 
-const filterSearchcriteria = (query) => {
-  const criteria = [];
-  if (query.experience) {
-    criteria.push(
-      `experience:between:${query.experience.min}:${query.experience.max}`
-    );
-  }
-  if (query.location) {
-    criteria.push(`location:equals:${query.location}`);
-  }
-  if (query.salaryType) {
-    criteria.push(`salaryType:equals:${query.salaryType}`);
-  }
-  if (query.education) {
-    const { schoolInstitution, degree, fieldOfStudy } = query.education;
-    if (schoolInstitution)
-      criteria.push(`schoolInstitution:equals:${schoolInstitution}`);
-    if (degree) criteria.push(`degree:equals:${degree}`);
-    if (fieldOfStudy) criteria.push(`fieldOfStudy:equals:${fieldOfStudy}`);
-  }
-  if (query.availability) {
-    const {
-      noticePeriod,
-      employmentType,
-      immediateAvailability,
-      onSite,
-      relocate,
-    } = query.availability;
-    if (noticePeriod) criteria.push(`noticePeriod:equals:${noticePeriod}`);
-    if (employmentType)
-      criteria.push(`employmentType:equals:${employmentType}`);
-    if (immediateAvailability)
-      criteria.push(`immediateAvailability:equals:true`);
-    if (onSite) criteria.push(`onSite:equals:true`);
-    if (relocate) criteria.push(`relocate:equals:true`);
-  }
-  if (query.industryDomain) {
-    criteria.push(`industryDomain:equals:${query.industryDomain}`);
-  }
-  if (query.certifications && query.certifications.length > 0) {
-    const certificationsCriteria = query.certifications.map(
-      (cert) => `certifications:equals:${cert}`
-    );
-    criteria.push(...certificationsCriteria);
-  }
-  if (query.itSkills && query.itSkills.length > 0) {
-    const itSkillsCriteria = query.itSkills.map(
-      (skill) => `itSkills:equals:${skill}`
-    );
-    criteria.push(...itSkillsCriteria);
-  }
-  if (query.diversity) {
-    criteria.push(`diversity:equals:${query.diversity}`);
-  }
-  if (query.age) {
-    criteria.push(`age:equals:${query.age}`);
-  }
-  if (query.lastActive) {
-    criteria.push(`lastActive:equals:${query.lastActive}`);
-  }
-  const filterCriteria = criteria.join("and");
-  return encodeURIComponent(filterCriteria);
-};
 
 const getCandidatesData = async (req, res) => {
   try {
     let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
+    let pageNumber=req.body.pageNumber;
     let str = ""; //{[...]}
     for (let key in query) {
       if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
@@ -126,10 +65,20 @@ const searchCandidateData = async (req, res) => {
 
 const getFilteredData = async (req, res) => {
   try {
-    const searchQuery = req.body;
-    const criteria = filterSearchcriteria(searchQuery);
-    const url = `${API_URL_SEARCH}?criteria=(${criteria})`;
-    const candidates = await candidateService.getFilteredZoho(url);
+    let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
+    let pageNumber=req.body.pageNumber;
+    let str = ""; //{[...]}
+    for (let key in query) {
+      if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
+        str += `(${key.trim()}:contains:${query[key].trim()})and`;
+      } else if ((key === "Experience_in_Years" || key==="Current_Timezone") && query[key] != "") {
+        str += `(${key.trim()}:equals:${query[key].trim()})and`;
+      }
+    }
+    query = str.substring(0,str.length-3);
+    console.log(query);
+    const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
+    const candidates = await candidateService.getFilteredZoho(res,url,pageNumber);
     return successResponse({ res, data: { candidates }, message: "Success" }); //function ending with zoho would make API calls
   } catch (error) {
     return errorResponse({ res, error });
@@ -182,6 +131,28 @@ const deletedCandidatesData = async (req, res) => {
   }
 };
 
+const getTotalCountData=async(req,res)=>{
+  try {
+    let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
+    let str = ""; //{[...]}
+    for (let key in query) {
+      if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
+        str += `(${key.trim()}:contains:${query[key].trim()})and`;
+      } else if ((key === "Experience_in_Years" || key==="Current_Timezone") && query[key] != "") {
+        str += `(${key.trim()}:equals:${query[key].trim()})and`;
+      }
+    }
+    query = str.substring(0,str.length-3);
+    console.log(query);
+    const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
+    console.log(url);
+    const successResponse = await getTotalCountZoho(res, url); //function ending with zoho would make API calls
+    return successResponse;
+  } catch (error) {
+    return errorResponse({ res, error });
+  }
+}
+
 module.exports = {
   getCandidateData,
   getCandidatesData,
@@ -191,4 +162,5 @@ module.exports = {
   getcandidateSearchBarData,
   getLocationSearchBarData,
   deletedCandidatesData,
+  getTotalCountData
 };

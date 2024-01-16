@@ -29,7 +29,7 @@ const addClientCandidatesZoho=async(res,data,url)=>{//direcxt add client with ca
                 Authorization: `Zoho-oauthtoken ${accessToken}`,
             }
         })
-        console.log(successRes.data);
+        console.log(successRes.data.data[0].details);
         return successResponse({ res, data: "Clients Candidates added Succesfully", message: "Success" });
     }catch(err){
         console.log(err)

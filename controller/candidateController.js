@@ -93,6 +93,14 @@ const deletedCandidates = async (req, res) => {
   }
 };
 
+const getTotalCount=async(req,res)=>{
+  try {
+    const successResponse = await candidateService.getTotalCountData(req,res);
+    return successResponse;
+  } catch (error) {
+    return errorResponse({ res, error });
+  }
+}
 const addCandidates = async (req, res) => {
   try {
     console.log('reached 1')
@@ -102,6 +110,8 @@ const addCandidates = async (req, res) => {
     return errorResponse({ res, err });
   }
 };
+
+
 
 module.exports = {
   getCandidate,
@@ -114,4 +124,5 @@ module.exports = {
   updateCandidates,
   deletedCandidates,
   addCandidates,
+  getTotalCount
 };
