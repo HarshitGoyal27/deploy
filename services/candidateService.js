@@ -10,7 +10,8 @@ const {
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
   updateCandidatesZoho,
-  getTotalCountZoho
+  getTotalCountZoho,
+  getFilteredZoho
 } = require("../zohoDb/zohoCandidateApis");
 const {
   API_URL_SEARCH,
@@ -65,22 +66,23 @@ const searchCandidateData = async (req, res) => {
 
 const getFilteredData = async (req, res) => {
   try {
-    let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
+    let query = req.body.prof; //we have to make query here and process it in zohoCandidateAPI
     let pageNumber=req.body.pageNumber;
     let str = ""; //{[...]}
     for (let key in query) {
       if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
         str += `(${key.trim()}:contains:${query[key].trim()})and`;
       } else if ((key === "Experience_in_Years" || key==="Current_Timezone") && query[key] != "") {
-        str += `(${key.trim()}:equals:${query[key].trim()})and`;
+        str += `(${key.trim()}:equals:${query[key]})and`;
       }
     }
     query = str.substring(0,str.length-3);
     console.log(query);
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
-    const candidates = await candidateService.getFilteredZoho(res,url,pageNumber);
-    return successResponse({ res, data: { candidates }, message: "Success" }); //function ending with zoho would make API calls
+    const successResponse = await getFilteredZoho(res,url,pageNumber);
+    return successResponse; //function ending with zoho would make API calls
   } catch (error) {
+    console.log('CC',error);
     return errorResponse({ res, error });
   }
 };

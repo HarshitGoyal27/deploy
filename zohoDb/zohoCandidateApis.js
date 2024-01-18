@@ -151,6 +151,7 @@ const getFilteredZoho = async (res,url,pageNumber) => {
     });
     if (candidates.data != "") {
       const candidatesData = getRequiredFields(candidates.data);
+      console.log(candidatesData);
       return successResponse({
         res,
         data: { candidatesData },
@@ -164,6 +165,7 @@ const getFilteredZoho = async (res,url,pageNumber) => {
       });
     }
   } catch (error) {
+    console.log('DD');
     return errorResponse({ res, error });
   }
 };

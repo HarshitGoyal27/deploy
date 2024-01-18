@@ -32,6 +32,7 @@ const getCandidates = async (req, res) => {
 const getFilteredCandidates = async (req, res) => {
   try {
     const successResponse = await candidateService.getFilteredData(req, res);
+    console.log('AA');
     return successResponse;
   } catch (error) {
     return errorResponse({ res, error });
