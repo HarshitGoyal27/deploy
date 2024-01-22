@@ -4,7 +4,5 @@ const Router = require('express')
 const dynamicController = require('../controller/dynamicController');
 const router = Router();
 router.use(Router.json());
-router.post('/sap-develoepr',dynamicController.getSAP);
-router.post('/cloud-develoepr',dynamicController.getCloud);
-router.post('/legacy-develoepr',dynamicController.getLegacy);
+router.get('/:developer',dynamicController.getDevelopers);
 module.exports = router;

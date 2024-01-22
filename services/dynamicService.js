@@ -3,33 +3,18 @@ const {
     errorResponse,
 } = require('../utils/response/response.handler');
 const {API_CLIENT}=require('../utils/constants/constants.js');
-const {getSAPDb,getCloudDb,getLegacyDb}=require('../zohoDb/dynamicDb.js');
+const {getDeveloperDb}=require('../mongoDb/dynamicDb.js');
 
-const getSAPdata=async(req,res)=>{
+const getDeveloperdata=async(req,res)=>{
     try{
-        const successResponse=await getSAPDb(res);
+        console.log(req.params.developer);//it should be (Skill)-developer from front end
+        const search_word=req.params.developer.replace(/-/g,' ');
+        const successResponse=await getDeveloperDb(res,search_word);
         return successResponse;
     }catch(err){
         return errorResponse({res,err});
     }
 }
 
-const getLegacyData=async(req,res)=>{
-    try{
-        const successResponse=await getLegacyDb(res);
-        return successResponse;
-    }catch(err){
-        return errorResponse({res,err});
-    }
-}
 
-const getCloudData=async(req,res)=>{
-    try{
-        const successResponse=await getCloudDb(res);
-        return successResponse;
-    }catch(err){
-        return errorResponse({res,err});
-    }
-}
-
-module.exports={getSAPdata,getCloudData,getLegacyData}
+module.exports={getDeveloperdata}

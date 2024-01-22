@@ -23,7 +23,7 @@ const {
 
 const getCandidatesData = async (req, res) => {
   try {
-    let query = req.body.profiles; //we have to make query here and process it in zohoCandidateAPI
+    let query = req.body.profiles; 
     let pageNumber=req.body.pageNumber;
     let str = ""; //{[...]}
     for (let key in query) {
@@ -36,7 +36,7 @@ const getCandidatesData = async (req, res) => {
     query = str.substring(0,str.length-3);
     console.log(query);
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
-    const successResponse = await getCandidatesZoho(res, url, pageNumber); //function ending with zoho would make API calls
+    const successResponse = await getCandidatesZoho(res, url, pageNumber); 
     return successResponse;
   } catch (error) {
     return errorResponse({ res, error });
@@ -49,7 +49,7 @@ const getCandidateData = async (req, res) => {
     const url1 = `${API_URL_GET}/${id}`;
     const url2 = `${API_URL_GET_TABULAR_OLD}?id=${id}`;
     const successResponse = await getCandidateZoho(res, url1, url2);
-    return successResponse; //function ending with zoho would make API calls
+    return successResponse; 
   } catch (error) {
     return errorResponse({ res, error });
   }
@@ -66,9 +66,9 @@ const searchCandidateData = async (req, res) => {
 
 const getFilteredData = async (req, res) => {
   try {
-    let query = req.body.prof; //we have to make query here and process it in zohoCandidateAPI
+    let query = req.body.prof;
     let pageNumber=req.body.pageNumber;
-    let str = ""; //{[...]}
+    let str = ""; 
     for (let key in query) {
       if (query[key] != "" && key!=="Experience_in_Years" && key!=="Current_Timezone") {
         str += `(${key.trim()}:contains:${query[key].trim()})and`;
@@ -80,7 +80,7 @@ const getFilteredData = async (req, res) => {
     console.log(query);
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
     const successResponse = await getFilteredZoho(res,url,pageNumber);
-    return successResponse; //function ending with zoho would make API calls
+    return successResponse;
   } catch (error) {
     console.log('CC',error);
     return errorResponse({ res, error });
