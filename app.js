@@ -26,12 +26,12 @@ app.use(allowCrossDomain);
 connection().then((resolve)=>{
   console.log(resolve);
   app.listen(port,async() => {
-    console.log(
-      `Server up and running on ${process.env.NODE_ENV} environment with port ${port} !`
-    );
+    console.log(`Server up and running on ${process.env.NODE_ENV} environment with port ${port} !`);
     startTokenRefreshing();
   });
-})
+}).catch((error)=>{
+  console.log(error);
+});
 
 
 
