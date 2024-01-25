@@ -212,16 +212,16 @@ const getCandidatesSearchBarZoho = async (res, url) => {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
       },
       params: {
-        per_page: 5,
+        per_page: 5 ,
         page: 1,
       },
     });
     const arr = resp1.data.data;
     if (!arr) {
-      return successResponse({ res, data: searchSkills, message: "Success" });
+      return successResponse({ res, data: [], message: "Success" });
     }
     const searchSkills = arr.map((ele) => {
-      const skill = ele.Skill_Set.match(/^[^,]*/);
+      const skill = ele.Skill_Set.match(/^[^,•]*/);
       return skill[0];
     });
     const uniqueSkills = [...new Set(searchSkills)];
@@ -239,21 +239,20 @@ const getLocationSearchBarZoho = async (res, url) => {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
       },
       params: {
-        per_page: 5,
+        per_page: 8,
         page: 1,
       },
     });
     const arr = resp.data.data;
-    const searchLocation = [];
     if (!arr) {
-      return successResponse({ res, data: searchLocation, message: "Success" });
+      console.log('abcd');
+      return successResponse({ res, data: [], message: "Success" });
     }
-    searchLocation = arr.map((ele) => {
+    const searchLocation = arr.map((ele) => {
       const location = ele.Current_Location;
       return location;
     });
     const uniqueLocations = [...new Set(searchLocation)];
-
     return successResponse({ res, data: uniqueLocations, message: "Success" });
   } catch (error) {
     return errorResponse({ res, error });
@@ -335,6 +334,36 @@ const getTotalCountZoho=async(res,url)=>{
   console.log('reacheddddd')
 }
 
+const getSCLCandidtatesZoho=async(res,url)=>{
+  const accessToken=getAccessToken();
+  console.log('C');
+  try{
+    const candidates=await axios.get(url,{
+      headers:{
+        Authorization:`Zoho-oauthtoken ${accessToken}`
+      },
+      params:{
+        per_page:5
+      }
+    });
+    if (candidates.data != "") {
+      const candidatesData = getRequiredFields(candidates.data);
+      return successResponse({
+        res,
+        data: { candidatesData },
+        message: "Success",
+      });
+    } else {
+      return successResponse({
+        res,
+        data: { candidatesData: "Data not present" },
+        message: "Success",
+      });
+    }
+  }catch(error){
+    return errorResponse({res,error});
+  }
+}
 module.exports = {
   getCandidatesZoho,
   getCandidateZoho,
@@ -346,5 +375,6 @@ module.exports = {
   getLocationSearchBarZoho,
   deletedCandidatesZoho,
   updateCandidatesZoho,
-  getTotalCountZoho
+  getTotalCountZoho,
+  getSCLCandidtatesZoho
 };

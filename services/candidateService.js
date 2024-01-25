@@ -11,7 +11,8 @@ const {
   deletedCandidatesZoho,
   updateCandidatesZoho,
   getTotalCountZoho,
-  getFilteredZoho
+  getFilteredZoho,
+  getSCLCandidtatesZoho
 } = require("../zohoDb/zohoCandidateApis");
 const {
   API_URL_SEARCH,
@@ -155,6 +156,18 @@ const getTotalCountData=async(req,res)=>{
   }
 }
 
+const getSCLCandidtatesData=async(req,res)=>{
+  try{
+    const query="(Skill_Set:contains:SAP)and(Skill_Set:contains:Legacy)and(Skill_Set:contains:Cloud)"
+    const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
+    const successResponse=await getSCLCandidtatesZoho(res,url);
+    return successResponse;
+  }catch(error){
+    return errorResponse({res,error});
+  }
+
+}
+
 module.exports = {
   getCandidateData,
   getCandidatesData,
@@ -164,5 +177,6 @@ module.exports = {
   getcandidateSearchBarData,
   getLocationSearchBarData,
   deletedCandidatesData,
-  getTotalCountData
+  getTotalCountData,
+  getSCLCandidtatesData
 };

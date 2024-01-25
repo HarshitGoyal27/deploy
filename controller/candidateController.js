@@ -112,6 +112,14 @@ const addCandidates = async (req, res) => {
   }
 };
 
+const getSCLCandidtates=async(req,res)=>{
+  try {
+    const successResponse = await candidateService.getSCLCandidtatesData(req, res);
+    return successResponse;
+  } catch (err) {
+    return errorResponse({ res, err });
+  }
+}
 
 
 module.exports = {
@@ -125,5 +133,6 @@ module.exports = {
   updateCandidates,
   deletedCandidates,
   addCandidates,
-  getTotalCount
+  getTotalCount,
+  getSCLCandidtates
 };
