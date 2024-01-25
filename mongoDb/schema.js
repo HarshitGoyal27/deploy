@@ -26,7 +26,6 @@ const schema=(mongoose)=>{
     const Legacy=mongoose.model('LegacyModel',schema,'Legacy');
     const Cloud=mongoose.model('CloudModel',schema,'Cloud');
     obj={SAP,Legacy,Cloud};
-    console.log('abccc',obj);
     setSharedObj(obj);
 }
 module.exports={schema};

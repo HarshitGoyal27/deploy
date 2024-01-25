@@ -1,58 +1,36 @@
-Preferred Skills for SAP HANA
+Preferred Skills for SAP HANA Developer
 
-1. Strong understanding of SAP HANA architecture and its components.
-2. Experience in data modeling, data integration, and data warehousing using SAP HANA.
-3. Proficiency in SQL and SAP HANA SQLScript.
-4. Experience in developing and optimizing SAP HANA views, procedures, and functions.
-5. Knowledge of SAP HANA administration and monitoring tools.
-6. Experience in working with SAP HANA Live and SAP HANA Cloud.
-7. Familiarity with SAP HANA security and authorization concepts.
-8. Experience in developing and implementing SAP HANA-based applications.
+1. Strong knowledge of SAP HANA architecture and administration.
+2. Experience in developing and implementing SAP HANA applications.
+3. Proficiency in SQL and SAP HANA modeling.
+4. Experience with SAP HANA Studio and other development tools.
+5. Knowledge of data warehousing and business intelligence concepts.
+6. Experience with cloud computing and virtualization technologies.
+7. Strong analytical and problem-solving skills.
+8. Excellent communication and teamwork skills.
 
-Job Requirements for SAP HANA
+Brief Job Advertisement for SAP HANA Developer at SkillCapital
 
-1. Minimum 3 years of experience in SAP HANA administration or a highly skilled fresher.
-2. Strong understanding of SAP HANA architecture, components, and functionality.
-3. Experience in installing, configuring, and maintaining SAP HANA systems.
-4. Experience in performance tuning and optimization of SAP HANA systems.
-5. Experience in data modeling, data integration, and data quality management in SAP HANA.
-6. Experience in developing and implementing SAP HANA applications.
-7. Experience in working with SAP HANA Studio and other SAP HANA tools.
-8. Strong communication and teamwork skills.
+SkillCapital, a leading provider of innovative technology solutions, is seeking a highly skilled and experienced SAP HANA Developer to join our dynamic team. The ideal candidate will have a strong understanding of SAP HANA architecture, data modeling, and development. Responsibilities include designing, developing, and implementing SAP HANA solutions, as well as providing technical support and guidance to clients. Excellent communication and teamwork skills are essential. Apply now and be part of our journey in shaping the future of technology!
 
-Brief Job Advertisement for SAP HANA at SkillCapital
+Job Requirements for SAP HANA Developer
 
-SkillCapital, a leading provider of SAP solutions, is seeking a highly skilled and experienced SAP HANA professional to join our team. The ideal candidate will have a strong understanding of SAP HANA architecture, implementation, and administration. Responsibilities include designing, implementing, and maintaining SAP HANA solutions, as well as providing technical support to users. Experience with SAP BW/4HANA and SAP S/4HANA is a plus. Join SkillCapital and be part of our dynamic team, shaping the future of SAP HANA technology.
+1. Minimum 3 years of experience in SAP HANA development or a highly skilled fresher.
+2. Strong knowledge of SAP HANA architecture, data modeling, and SQL.
+3. Experience in developing and implementing SAP HANA applications.
+4. Experience in working with SAP HANA Studio and other SAP HANA development tools.
+5. Good understanding of data warehousing concepts and techniques.
+6. Experience in working with large datasets and complex queries.
+7. Strong problem-solving and analytical skills.
+8. Good communication and teamwork skills.
 
-Roles and Responsibilities for SAP HANA
+Roles and Responsibilities for SAP HANA Developer
 
-1. Database Administration
-   - Managing and monitoring SAP HANA database instances.
-   - Performing backups, restores, and disaster recovery procedures.
-   - Optimizing database performance and scalability.
-
-2. Data Modeling and Design
-   - Designing and implementing data models for SAP HANA.
-   - Optimizing data structures and indexes for efficient data retrieval.
-   - Ensuring data integrity and consistency.
-
-3. Data Integration and Migration
-   - Integrating data from various sources into SAP HANA.
-   - Migrating data from legacy systems to SAP HANA.
-   - Ensuring data accuracy and completeness during data integration and migration.
-
-4. Application Development
-   - Developing applications that leverage SAP HANA's in-memory computing capabilities.
-   - Optimizing application performance by utilizing SAP HANA's advanced features.
-   - Ensuring application compatibility with SAP HANA.
-
-5. Security and Compliance
-   - Implementing security measures to protect SAP HANA data and systems.
-   - Ensuring compliance with regulatory and industry standards.
-   - Monitoring and auditing SAP HANA systems for security breaches.
-
-6. Performance Tuning and Optimization
-   - Analyzing and optimizing SAP HANA system performance.
-   - Identifying and resolving performance bottlenecks.
-   - Implementing best practices for SAP HANA performance tuning.
+1. Design and develop SAP HANA applications using SAP HANA Studio and other relevant tools.
+2. Work closely with business stakeholders to understand their requirements and translate them into technical specifications.
+3. Develop and maintain data models, tables, and views in SAP HANA.
+4. Optimize SAP HANA performance by tuning queries, indexes, and other performance-related settings.
+5. Implement security measures to protect data and ensure compliance with regulations.
+6. Troubleshoot and resolve technical issues related to SAP HANA development and deployment.
+7. Stay up-to-date with the latest SAP HANA technologies and best practices.
 

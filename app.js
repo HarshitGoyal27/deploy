@@ -23,13 +23,16 @@ app.use(helmet());
 app.use(compression());
 app.use(allowCrossDomain);
 
-app.listen(port,async() => {
-  console.log(
-    `Server up and running on ${process.env.NODE_ENV} environment with port ${port} !`
-  );
-  connection();
-  startTokenRefreshing();
-});
+connection().then((resolve)=>{
+  console.log(resolve);
+  app.listen(port,async() => {
+    console.log(
+      `Server up and running on ${process.env.NODE_ENV} environment with port ${port} !`
+    );
+    startTokenRefreshing();
+  });
+})
+
 
 
 

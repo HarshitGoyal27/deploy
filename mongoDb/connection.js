@@ -4,13 +4,16 @@ const axios=require('axios');
 const fs=require('fs');
 const {setSharedObj} = require('../shared.js');
 const {schema}=require("./schema.js");
-const connection=async()=>{
-    mongoose.connect(uri).then(()=>{
-        console.log('DB connected');
-        schema(mongoose);
-    }).catch((err)=>{
-        console.log('Not connected',err);
-    });
+const connection=()=>{
+    return new Promise(async(resolve,reject)=>{
+        try{
+            await mongoose.connect(uri);
+            schema(mongoose);
+            resolve('Mongodb connected');
+        }catch(err){
+            reject('Mongodb Not connected');
+        }
+    })
 }
 
 module.exports={connection};

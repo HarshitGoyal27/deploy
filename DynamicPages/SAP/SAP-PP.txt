@@ -1,0 +1,32 @@
+Brief Job Advertisement for SAP PP Developer at SkillCapital
+
+SkillCapital, a leading provider of SAP solutions, is seeking a highly skilled and experienced SAP PP Developer to join our team. The successful candidate will have a proven track record of success in implementing and supporting SAP PP modules, and will be responsible for the development, testing, and deployment of SAP PP solutions.
+
+Roles and Responsibilities for SAP PP Developer
+
+1. Design, develop, test, and implement SAP PP modules.
+2. Analyze and resolve PP-related issues and provide technical support to users.
+3. Work closely with cross-functional teams to ensure successful project delivery.
+4. Stay up-to-date with the latest SAP PP developments and best practices.
+5. Provide training and support to users on SAP PP functionality.
+6. Document and maintain SAP PP configurations and processes.
+
+Job Requirements for SAP PP Developer
+
+1. Minimum experience of 3 years or a highly skilled fresher in SAP PP.
+2. Strong understanding of SAP PP concepts and processes.
+3. Excellent ABAP programming skills.
+4. Experience in working with SAP PP interfaces and integrations.
+5. Good understanding of SD, MM, and QM modules.
+6. Strong analytical and problem-solving skills.
+7. Excellent communication and teamwork skills.
+
+Preferred Skills for SAP PP Developer
+
+1. Experience in working with SAP S/4HANA.
+2. Knowledge of SAP Fiori and SAPUI5.
+3. Experience in working with SAP Leonardo IoT and SAP Analytics Cloud.
+4. Experience in working with SAP PP add-ons and third-party tools.
+5. Knowledge of Lean Manufacturing and Six Sigma principles.
+6. Certification in SAP PP or related areas.
+
