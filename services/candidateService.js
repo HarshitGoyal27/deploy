@@ -158,7 +158,7 @@ const getTotalCountData=async(req,res)=>{
 
 const getSCLCandidtatesData=async(req,res)=>{
   try{
-    const query="(Skill_Set:contains:SAP)and(Skill_Set:contains:Legacy)and(Skill_Set:contains:Cloud)"
+    const query="(Skill_Set:contains:SAP)or(Skill_Set:contains:Legacy)or(Skill_Set:contains:Cloud)"
     const url = `${API_URL_SEARCH}?criteria=${encodeURIComponent(query)}`;
     const successResponse=await getSCLCandidtatesZoho(res,url);
     return successResponse;
