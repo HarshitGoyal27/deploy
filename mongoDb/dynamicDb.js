@@ -9,7 +9,7 @@ const {skill}=require("../chatgpt.js");
 const {parsePage}=require("../DynamicPages/parsepages.js")
 const getDeveloperDb=async(res,search_word)=>{
     let flag=true;
-    let dataToMongoDb=null;
+    let dataToMongoDb;
     const {SAP,Legacy,Cloud}=getSharedObj();
     try{
         const resp=await SAP.findOne({Skill:new RegExp(`^${search_word}$`,'i')});
@@ -17,13 +17,13 @@ const getDeveloperDb=async(res,search_word)=>{
             return successResponse({res, data:resp, message: "Success" });
         }
         else{
-            const resp2=await skill(search_word+' Developer'); 
+            await skill(search_word+' Developer'); 
             flag=false;
             dataToMongoDb=parsePage(`${search_word.replace(/\s+/g,'-').trim()+'.txt'}`);
             if(dataToMongoDb)
                 return successResponse({res, data:dataToMongoDb, message: "Success" });
             else
-                throw new Error('Errorrr in parse pagee');
+                throw 'Error in parsee pageee';
         }
     }catch(err){
         console.log(err);

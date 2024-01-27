@@ -30,7 +30,6 @@ const parsePage=(search_file)=>{
         const f2=regex_pref.test(txt);
         const f3=regex_req.test(txt);
         const f4=regex_roles.test(txt);
-        //console.log(f1,f2,f3,f4);
         if(f1 && f2 && f3 && f4){
             obj={};
             obj.Skill=txt.match(regex_req)[1].trim();

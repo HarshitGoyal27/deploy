@@ -221,7 +221,7 @@ const getCandidatesSearchBarZoho = async (res, url) => {
       return successResponse({ res, data: [], message: "Success" });
     }
     const searchSkills = arr.map((ele) => {
-      const skill = ele.Skill_Set.match(/^[^,•]*/);
+      const skill = ele.Skill_Set.match(/^[^,•:]*/);
       return skill[0];
     });
     const uniqueSkills = [...new Set(searchSkills)];
@@ -364,6 +364,7 @@ const getSCLCandidtatesZoho=async(res,url)=>{
     return errorResponse({res,error});
   }
 }
+
 module.exports = {
   getCandidatesZoho,
   getCandidateZoho,
