@@ -331,7 +331,6 @@ const getTotalCountZoho=async(res,url)=>{
     console.log('errorr in fetching too many records');
     return errorResponse({ res, error });
   }
-  console.log('reacheddddd')
 }
 
 const getSCLCandidtatesZoho=async(res,url)=>{
