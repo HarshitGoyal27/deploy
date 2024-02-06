@@ -21,11 +21,17 @@ const schema=(mongoose)=>{
             type:String,
             required:true
         }
+    });
+    const certification=mongoose.Schema({
+        Certification_Summary:{
+            type:String,
+        }
     })
     const SAP=mongoose.model('SAPModel',schema,'SAP');
     const Legacy=mongoose.model('LegacyModel',schema,'Legacy');
     const Cloud=mongoose.model('CloudModel',schema,'Cloud');
-    obj={SAP,Legacy,Cloud};
+    const cert=mongoose.model('cert',certification,'Certification');
+    obj={SAP,Legacy,Cloud,cert};
     setSharedObj(obj);
 }
 module.exports={schema};

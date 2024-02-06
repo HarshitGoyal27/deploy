@@ -16,4 +16,5 @@ router.put('/update/candidates/:id',candidateController.updateCandidates);
 router.get('/deletedrecords/candidates',candidateController.deletedCandidates);
 router.post('/count/candidates',candidateController.getTotalCount);
 router.get('/allskills/candidates',candidateController.getSCLCandidtates);
+router.get('/certification/candidates',candidateController.getCertification);
 module.exports = router;

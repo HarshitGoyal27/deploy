@@ -120,7 +120,14 @@ const getSCLCandidtates=async(req,res)=>{
     return errorResponse({ res, err });
   }
 }
-
+ const getCertification=async(req,res)=>{
+  try {
+    const successResponse = await candidateService.getCertificationData(req, res);
+    return successResponse;
+  } catch (err) {
+    return errorResponse({ res, err });
+  }
+ }
 
 module.exports = {
   getCandidate,
@@ -134,5 +141,6 @@ module.exports = {
   deletedCandidates,
   addCandidates,
   getTotalCount,
-  getSCLCandidtates
+  getSCLCandidtates,
+  getCertification
 };

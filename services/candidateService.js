@@ -12,7 +12,8 @@ const {
   updateCandidatesZoho,
   getTotalCountZoho,
   getFilteredZoho,
-  getSCLCandidtatesZoho
+  getSCLCandidtatesZoho,
+  getCertificationZoho
 } = require("../zohoDb/zohoCandidateApis");
 const {
   API_URL_SEARCH,
@@ -165,7 +166,16 @@ const getSCLCandidtatesData=async(req,res)=>{
   }catch(error){
     return errorResponse({res,error});
   }
+}
 
+const getCertificationData=async(req,res)=>{
+  try{
+    const query=req.body.word
+    const successResponse=await getCertificationZoho(res,query);
+    return successResponse;
+  }catch(error){
+    return errorResponse({res,error});
+  }
 }
 
 module.exports = {
@@ -178,5 +188,6 @@ module.exports = {
   getLocationSearchBarData,
   deletedCandidatesData,
   getTotalCountData,
-  getSCLCandidtatesData
+  getSCLCandidtatesData,
+  getCertificationData
 };

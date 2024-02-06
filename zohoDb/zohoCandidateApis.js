@@ -56,6 +56,7 @@ const getTabularFields = ({ FL }) => {
 const getCandidatesZoho = async (res, url, pageNumber) => {
   try {
     const accessToken = getAccessToken();
+    console.log(url);
     const candidates = await axios.get(url, {
       headers: {
         Authorization: `Zoho-oauthtoken ${accessToken}`,
@@ -364,6 +365,14 @@ const getSCLCandidtatesZoho=async(res,url)=>{
   }
 }
 
+const getCertificationZoho=async(res,query_word)=>{
+  try{
+
+  }catch(err){
+
+  }
+}
+
 module.exports = {
   getCandidatesZoho,
   getCandidateZoho,
@@ -376,5 +385,6 @@ module.exports = {
   deletedCandidatesZoho,
   updateCandidatesZoho,
   getTotalCountZoho,
-  getSCLCandidtatesZoho
+  getSCLCandidtatesZoho,
+  getCertificationZoho
 };
