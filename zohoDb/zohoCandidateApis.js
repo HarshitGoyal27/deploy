@@ -373,6 +373,31 @@ const getCertificationZoho=async(res,query_word)=>{
   }
 }
 
+const getLinkedinZoho=async(res,link)=>{
+  const options = {
+    method: 'POST',
+    url: 'https://linkedin-data-scraper.p.rapidapi.com/person_deep',
+    headers: {
+      'content-type': 'application/json',
+      'X-RapidAPI-Key': '16f4cf4345msh4cdbad93810196fp11aa70jsn852dc5345e60',
+      'X-RapidAPI-Host': 'linkedin-data-scraper.p.rapidapi.com'
+    },
+    data:{}
+  };
+  try{
+    options.data.link=`${link}`;
+    console.log('A',options)
+    const response=await axios.request(options);
+    return successResponse({
+      res,
+      data: { candidatesData: response.data.data },
+      message: "Success",
+    });
+  }catch(err){
+    return errorResponse({res,err});
+  }
+}
+
 module.exports = {
   getCandidatesZoho,
   getCandidateZoho,
@@ -386,5 +411,6 @@ module.exports = {
   updateCandidatesZoho,
   getTotalCountZoho,
   getSCLCandidtatesZoho,
-  getCertificationZoho
+  getCertificationZoho,
+  getLinkedinZoho
 };

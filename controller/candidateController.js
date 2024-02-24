@@ -129,6 +129,15 @@ const getSCLCandidtates=async(req,res)=>{
   }
  }
 
+const getLinkedin=async(req,res)=>{
+  try {
+    const successResponse = await candidateService.getLinkedinData(req, res);
+    return successResponse;
+  } catch (err) {
+    return errorResponse({ res, err });
+  }
+}
+
 module.exports = {
   getCandidate,
   getCandidatesBySearch,
@@ -138,6 +147,7 @@ module.exports = {
   getcandidateSearchBar,
   getLocationSearchBar,
   updateCandidates,
+  getLinkedin,
   deletedCandidates,
   addCandidates,
   getTotalCount,

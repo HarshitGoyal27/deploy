@@ -17,4 +17,5 @@ router.get('/deletedrecords/candidates',candidateController.deletedCandidates);
 router.post('/count/candidates',candidateController.getTotalCount);
 router.get('/allskills/candidates',candidateController.getSCLCandidtates);
 router.get('/certification/candidates',candidateController.getCertification);
+router.post('/linkedin/candidates',candidateController.getLinkedin);
 module.exports = router;
