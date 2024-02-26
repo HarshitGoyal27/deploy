@@ -53,6 +53,17 @@ const getTabularFields = ({ FL }) => {
   return obj;
 };
 
+const getScore=({data})=>{
+  let months_exp=0;
+  data.experiences.forEach((ele)=>{
+      const date=ele.caption;
+      const regex=/[^·]+\s*[·]\s*([^\n\r]+)/;
+      const duration=regex.test(date)?date.match(regex)[1]:'';//in months
+      months_exp+=parseInt(duration.match(/([\d]+)/)[1]);
+  });
+  return months_exp;
+}
+
 const getCandidatesZoho = async (res, url, pageNumber) => {
   try {
     const accessToken = getAccessToken();
@@ -388,12 +399,15 @@ const getLinkedinZoho=async(res,link)=>{
     options.data.link=`${link}`;
     console.log('A',options)
     const response=await axios.request(options);
+    const score=getScore(response.data);
+    console.log('Score is ',score)
     return successResponse({
       res,
-      data: { candidatesData: response.data.data },
+      data: { score: score},
       message: "Success",
     });
   }catch(err){
+    console.log(err);
     return errorResponse({res,err});
   }
 }
