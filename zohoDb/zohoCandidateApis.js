@@ -6,6 +6,15 @@ const {
 const axios = require("axios");
 const { getAccessToken } = require("../accessToken");
 
+const removeDuplicates=(data)=>{
+  const set=new Set();
+  data.forEach((ele)=>{
+    ele=ele.replace(ele.charAt(0),ele.charAt(0).toUpperCase()).trim();
+    set.add(ele);
+  });
+  return [...set];
+
+}
 const getRequiredFields = (C_data) => {
   return C_data.data.map((ele) => ({
     Name: ele.Full_Name,
@@ -236,7 +245,7 @@ const getCandidatesSearchBarZoho = async (res, url) => {
       const skill = ele.Skill_Set.match(/^[^,•:]*/);
       return skill[0];
     });
-    const uniqueSkills = [...new Set(searchSkills)];
+    const uniqueSkills = removeDuplicates(searchSkills);
     return successResponse({ res, data: uniqueSkills, message: "Success" });
   } catch (error) {
     return errorResponse({ res, error });
@@ -264,7 +273,7 @@ const getLocationSearchBarZoho = async (res, url) => {
       const location = ele.Current_Location;
       return location;
     });
-    const uniqueLocations = [...new Set(searchLocation)];
+    const uniqueLocations = removeDuplicates(searchLocation);
     return successResponse({ res, data: uniqueLocations, message: "Success" });
   } catch (error) {
     return errorResponse({ res, error });
