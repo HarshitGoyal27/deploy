@@ -8,11 +8,16 @@ const { getAccessToken } = require("../accessToken");
 
 const removeDuplicates=(data)=>{
   const set=new Set();
+  const arr=[]
   data.forEach((ele)=>{
+    let temp=ele.toLowerCase();
     ele=ele.replace(ele.charAt(0),ele.charAt(0).toUpperCase()).trim();
-    set.add(ele);
+    if(!set.has(temp)){
+      set.add(ele);
+      arr.push(ele);
+    }
   });
-  return [...set];
+  return arr;
 
 }
 const getRequiredFields = (C_data) => {
