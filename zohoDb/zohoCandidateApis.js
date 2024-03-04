@@ -13,7 +13,7 @@ const removeDuplicates=(data)=>{
     let temp=ele.toLowerCase();
     ele=ele.replace(ele.charAt(0),ele.charAt(0).toUpperCase()).trim();
     if(!set.has(temp)){
-      set.add(ele);
+      set.add(temp);
       arr.push(ele);
     }
   });
@@ -139,7 +139,7 @@ const getCandidateZoho = async (res, url1, url2) => {
     } else {
       return successResponse({
         res,
-        data: { candidatesData: "Data not present" },
+        data: { candidatesData:[] },
         message: "Success",
       });
     }
